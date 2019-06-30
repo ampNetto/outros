@@ -347,10 +347,10 @@ function graficoLinha(graf5) {
 					maintainAspectRatio : false,
 					layout : {
 						padding : {
-							left : 0,
-							right : 0,
-							top : 0,
-							bottom : 40
+							left : 10,
+							right : 25,
+							top : 25,
+							bottom : 0
 						}
 					},
 					scales : {

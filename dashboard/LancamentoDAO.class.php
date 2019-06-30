@@ -166,7 +166,7 @@ class LancamentoDAO extends jnDAO {
 					  INNER JOIN financas.tipolancamento L02 ON (L02.tla_id = L01.tla_id)
 					WHERE
 					  L01.lan_ano = {$ano} AND
-					  L02.tla_tipo = 'c' AND
+					  L02.tla_tipo = 'd' AND
 					  L02.tla_id = financas.tipolancamento.tla_id
 					) as acumulo
 					FROM

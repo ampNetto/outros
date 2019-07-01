@@ -20,9 +20,12 @@ $(function() {
 					if (resul) {
 						$('#hide').show();
 						var colsMaioresReceita = '', colsMaioresDespesas = '';
-						var res = resul.replace("[", "");
-						var stringExemplo = res.replace("]", "");
-						var resultado = stringExemplo.split(",");
+						var res = resul
+								.replace("[", "");
+						var stringExemplo = res
+								.replace("]", "");
+						var resultado = stringExemplo
+								.split(",");
 						obj = JSON.parse(resul);
 						// console.log(obj.maioresReceita);
 						$('#receitabrut').text('$ '+ obj.sqlCalculos[0].receitabruta);
@@ -34,36 +37,36 @@ $(function() {
 						$('.ColumnTDRemove').remove();
 						$.each(obj.maioresReceita,function(chave,nome) {
 							colsMaioresReceita += '<tr class="ColumnTDRemove">'
-													+ '<td>'
-													+ nome['tla_descricao']
-													+ '</td>'
-													+ '<td>'
-													+ nome['posicao']
-													+ '</td>'
-													+ '<td>'
-													+ nome['valor']
-													+ '</td>'
-													+ '<td>'
-													+ nome['acumulo']
-													+ '</td>'
-													+ '</tr>';
+									+ '<td>'
+									+ nome['tla_descricao']
+									+ '</td>'
+									+ '<td>'
+									+ nome['posicao']
+									+ '</td>'
+									+ '<td>'
+									+ nome['valor']
+									+ '</td>'
+									+ '<td>'
+									+ nome['acumulo']
+									+ '</td>'
+									+ '</tr>';
 						});
 						$.each(obj.maioresDespesas,function(chave,nome) {
 							colsMaioresDespesas += '<tr class="ColumnTDRemove">'
-													+ '<td>'
-													+ nome['tla_descricao']
-													+ '</td>'
-													+ '<td>'
-													+ nome['posicao']
-													+ '</td>'
-													+ '<td>'
-													+ nome['valor']
-													+ '</td>'
-													+ '<td>'
-													+ nome['acumulo']
-													+ '</td>'
-													+ '</tr>';
-										});
+									+ '<td>'
+									+ nome['tla_descricao']
+									+ '</td>'
+									+ '<td>'
+									+ nome['posicao']
+									+ '</td>'
+									+ '<td>'
+									+ nome['valor']
+									+ '</td>'
+									+ '<td>'
+									+ nome['acumulo']
+									+ '</td>'
+									+ '</tr>';
+						});
 						$('#maiorReceita').append(colsMaioresReceita);
 						$('#maiorDespesas').append(colsMaioresDespesas);
 						// console.log(obj.maioresDespesas);
@@ -127,81 +130,82 @@ function buscarAno() {
 	})
 
 }
-
+//grafico 1 Por receitas
 function grafico1(graf1) {
-
+//	cria uma array
 	var dataPoints1 = [];
+//	dados retorna tudo com string quebrar a array e converter o valor float
 	$.each(graf1, function(chave, nome) {
+//		insere uma nova array com a chave label e y
 		dataPoints1[chave] = {
 			label : nome['tla_descricao'],
+//			converte string em float
 			y : parseFloat(nome['valor'])
 		};
 	});
 	var options1 = {
 		animationEnabled : true,
-		// title: {
-		// text: "por Receita"
-		// },
 		axisY : {
 			suffix : "R$",
 			includeZero : false
 		},
 		axisX : {
-		// title: "Countries"
 		},
 		data : [ {
 			type : "column",
+//			mascara para mostrar o valor
 			yValueFormatString : "#,##0.0#",
+//			array com o valor e a label para mostrar
 			dataPoints : dataPoints1
 		} ]
 	};
+//	insere o grafico na tela pelo Canvas 
 	$("#chart_div1").CanvasJSChart(options1);
 
 }
+//grafico 2 Por Despesas
 function grafico2(graf2) {
+//	cria uma array
 	var dataPoints2 = [];
+//	dados retorna tudo com string quebrar a array e converter o valor float
 	$.each(graf2, function(chaves, nomes) {
-		// console.log(nomes);
+//		insere uma nova array com a chave label e y
 		dataPoints2[chaves] = {
 			label : nomes['tla_descricao'],
+//			converte string em float
 			y : parseFloat(nomes['valor'])
 		};
 	});
 	var options2 = {
 		animationEnabled : true,
-		// title: {
-		// text: "Grafico 2"
-		// },
 		axisY : {
 			suffix : "R$",
 			includeZero : false
 		},
 		axisX : {
-		// title: "Countries"
 		},
 		data : [ {
 			type : "column",
+//			mascara para mostrar o valor
 			yValueFormatString : "#,##0.0#",
+//			array com o valor e a label para mostrar
 			dataPoints : dataPoints2
 		} ]
 	};
+//	insere o grafico na tela pelo Canvas 
 	$("#chart_div2").CanvasJSChart(options2);
 
 }
+//grafico Receita X Despesas
 function grafico3(graf3) {
 
 	var options3 = {
 		animationEnabled : true,
-		// title: {
-		// text: "grafico 3 Receita X Despesas"
-		// },
 		axisY : {
-			// title: "Growth Rate (in R$)",
 			suffix : "R$",
 			includeZero : false
 		},
 		axisX : {
-		// title: "Countries"
 		},
 		data : [ {
 			type : "column",
@@ -217,26 +221,33 @@ function grafico3(graf3) {
 			]
 		} ]
 	};
+//	insere o grafico na tela pelo Canvas 
 	$("#chart_div3").CanvasJSChart(options3);
 
 }
-// Grafico circular
+// Grafico circular por Despesa(acumulada)
 function graficoCirculo(graf4) {
 	var legenta = '';
-	var dataNome = [], dataValor= [], tuto = [];
-	var legentaCor = ['text-primary', 'text-success', 'text-info', 'text-warning','tla_descricao',];
+//	cria uma array
+	var dataNome = [], dataValor = [], tuto = [];
+//	cria array com text para as cor
+	var legentaCor = [ 'text-primary', 'text-success', 'text-info',
+			'text-warning', 'tla_descricao', ];
 	$(".fa-circle, #nomeLabel").remove();
+//	quebra a array que vem da consulta e insere nas novas array
 	$.each(graf4, function(chave, nome) {
+//		nome que esta no sql
 		dataNome[chave] = nome['tla_descricao'];
+//		valor convertendo em float
 		dataValor[chave] = parseFloat(nome['acumulo']);
-		legenta = '<span class="mr-2"><h4>'+
-			'<i class="fa fa-circle '+legentaCor[chave] +'" ></i>'+
-			'<laber id="nomeLabel"> '+nome['tla_descricao']+' </laber></h4>';
-
-		
+//		legenta para saber de qual e qual valor com a cor
+		legenta = '<span class="mr-2"><h4>' + '<i class="fa fa-circle '
+				+ legentaCor[chave] + '" ></i>' + '<laber id="nomeLabel"> '
+				+ nome['tla_descricao'] + ' </laber></h4>';
+//		adiciona na tela a legenta
 		$("#legenta").append(legenta);
 	});
-	
+
 			// Set new default font family and font color to mimic Bootstrap's
 			// default styling
 			Chart.defaults.global.defaultFontFamily = 'Nunito',
@@ -248,9 +259,12 @@ function graficoCirculo(graf4) {
 	var myPieChart = new Chart(ctx, {
 		type : 'doughnut',
 		data : {
+//			array com o nomes
 			labels : dataNome,
 			datasets : [ {
+//				array com os valores para o grafico em circulo
 				data : dataValor,
+//				cores do cicrulo, tem que esta na mesma ortem da legentaCor
 				backgroundColor : [ '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e',
 						'#858796' ],
 				hoverBackgroundColor : [ '#2e59d9', '#17a673', '#2c9faf',
@@ -278,16 +292,15 @@ function graficoCirculo(graf4) {
 	});
 }
 
-// Grafico Linera
+// Grafico Linera IPCA (acumulado 12 meses)
 function graficoLinha(graf5) {
-	var valor = [], numeros ;
+//	cria a arry
+	var valor = [];
+//	quebra e converte a array em float
 	$.each(graf5, function(chave, nome) {
-		valor[chave] = Number(nome['lan_valor']) ;
-//		numeros = nome['lan_valor'].replace(".", ",")
-//		valor[chave] = numeros.replace('"', '');
-		
+		valor[chave] = Number(nome['lan_valor']);
 	});
-	
+
 			// Set new default font family and font color to mimic Bootstrap's
 			// default styling
 			Chart.defaults.global.defaultFontFamily = 'Nunito',
@@ -340,6 +353,7 @@ function graficoLinha(graf5) {
 						pointHoverBorderColor : "rgba(78, 115, 223, 1)",
 						pointHitRadius : 10,
 						pointBorderWidth : 2,
+//						insere no grafico a array 
 						data : valor,
 					} ],
 				},
@@ -372,6 +386,7 @@ function graficoLinha(graf5) {
 								padding : 10,
 								// Include a dollar sign in the ticks
 								callback : function(value, index, values) {
+//									retorna o valor no bonto das linhas
 									return '$' + number_format(value);
 								}
 							},
@@ -385,6 +400,7 @@ function graficoLinha(graf5) {
 						} ],
 					},
 					legend : {
+//						legenta superior do grafico
 						display : false
 					},
 					tooltips : {
@@ -405,7 +421,9 @@ function graficoLinha(graf5) {
 							label : function(tooltipItem, chart) {
 								var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label
 										|| '';
-								return datasetLabel + ': $'+tooltipItem.yLabel;
+//								retorna para a tela o balao com o mes e o valor
+								return datasetLabel + ': $'
+										+ tooltipItem.yLabel;
 							}
 						}
 					}

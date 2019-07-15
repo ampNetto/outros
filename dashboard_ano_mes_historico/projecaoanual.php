@@ -58,7 +58,12 @@ class ProjecaoAnual extends jnControlePadrao {
 					}
 				}
 			}
-		}		
+		}
+		foreach ( $totalAno as $key => $value ) {
+			
+			$totalAno[$key][0]['sum'] = 'R$ ' . number_format ( $value[0]['sum'], 2, ',', '.' );
+			
+		}
 // 		$uniqtotalAno = array_unique($totalAno);
 // 		echo "<pre>";
 // 		var_dump($totalAno);die;
